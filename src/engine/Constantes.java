@@ -7,7 +7,7 @@ public class Constantes {
 	public static final long DURACAO_QUADRO_PARADO = 400;
 	public static final long DURACAO_QUADRO_CORRENDO = 50;
 
-	public static final long DESLOCAMENTO = 5;
+	public static final int DESLOCAMENTO = 3;
 
 	public static final int STATUS_PARADO = 0;
 	public static final int STATUS_CORRENDO = 1;
@@ -19,4 +19,6 @@ public class Constantes {
 	public static final  int RESOLUCAO_PADRAO_LARGURA = 800;
 	
 	public static final  int RESOLUCAO_PADRAO_COMPRIMENTO = 600;
+	
+	public static final  Long FPS = (long) 1000 / 30;
 }

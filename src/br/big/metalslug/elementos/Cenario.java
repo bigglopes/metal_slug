@@ -1,9 +1,10 @@
 package br.big.metalslug.elementos;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -11,68 +12,45 @@ import br.big.metalslug.util.ImageUtil;
 import engine.Constantes;
 
 public class Cenario {
-	private BufferedImage chao;
-	private BufferedImage fundo;
-	private BufferedImage ceu;
+	private List<Sprite> chao = new ArrayList<Sprite>();
+	private List<Sprite> fundo = new ArrayList<Sprite>();
+	private List<Sprite> ceu = new ArrayList<Sprite>();
 
 	private Long FPS_NUVEM = (long) 1000 / 8;
-	private Long FPS_JOGO = (long) 1000 / 60;
-	private Long quadroAnterior = 0L;
+
 	private Long quadroAnteriorNuvem = 0L;
-	private int deslocamentoCeu = 0;
 
 	private final int INICIO_CHAO = 150;
 	private final int INICIO_FUNDO = 270;
 	private final int INICIO_CEU = 150;
 
-	private int posicionamentoInicialPlayer = 0;
-
-	public Cenario(int posicionamentoPlayer) {
+	public Cenario() {
 		try {
 			File f = new File("D:\\metal_slug\\sprites\\ambiente\\chao.png");
-			this.chao = ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES);
+			chao.add(new Sprite(0, INICIO_CHAO, ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES)));
 			f = new File("D:\\metal_slug\\sprites\\ambiente\\fundo.png");
-			this.fundo = ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES);
+			fundo.add(new Sprite(0, INICIO_FUNDO, ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES)));
 			f = new File("D:\\metal_slug\\sprites\\ambiente\\ceu.png");
-			this.ceu = ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES);
-
-			this.posicionamentoInicialPlayer = posicionamentoPlayer;
+			ceu.add(new Sprite(0, INICIO_CEU, ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES)));
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void render(Graphics2D g , int posicionamentoPlayer ) {
-		double larguraTela =Constantes.RESOLUCAO_PADRAO_LARGURA;
-		
-		int deslocamentoAmbiente = 0;
-		
-		deslocamentoAmbiente = -1*(posicionamentoPlayer - posicionamentoInicialPlayer)/3;
-		
-		
-		if( posicionamentoPlayer < posicionamentoInicialPlayer )
-			deslocamentoAmbiente = 0;
-		
+	public void render(Graphics2D g, int deslocamento) {
+
 		if ((System.currentTimeMillis() - quadroAnteriorNuvem) > FPS_NUVEM) {
-			deslocamentoCeu += 1;
+			this.ceu.forEach(c -> c.deslocarX(-1));
 			this.quadroAnteriorNuvem = System.currentTimeMillis();
-			
 		}
-			
-		
-		if ((System.currentTimeMillis() - quadroAnterior) > FPS_JOGO) {
-			g.drawImage(this.ceu, 0 - deslocamentoCeu, INICIO_CEU, null);
-			g.drawImage(this.ceu, ceu.getWidth() - deslocamentoCeu, INICIO_CEU, null);
-			
-			
-			g.drawImage(this.fundo, deslocamentoAmbiente, INICIO_FUNDO  , null);
-			g.drawImage(this.chao, deslocamentoAmbiente, INICIO_CHAO , null);
-			this.quadroAnterior = System.currentTimeMillis();
-		}	
-		
-			
-		
+
+		this.chao.forEach(c -> c.deslocarX(deslocamento));
+		this.fundo.forEach(f -> f.deslocarX(deslocamento));
+
+		this.ceu.forEach(c -> c.render(g));
+		this.fundo.forEach(f -> f.render(g));
+		this.chao.forEach(c -> c.render(g));
 	}
 
 }

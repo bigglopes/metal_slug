@@ -1,9 +1,11 @@
 package br.big.metalslug.util;
 
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+import br.big.metalslug.elementos.Sprite;
 import engine.Constantes;
 
 public class ImageUtil {
@@ -33,5 +35,8 @@ public class ImageUtil {
 		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 		return op.filter(myImage, null);
 	}
+	
+	
+
 
 }

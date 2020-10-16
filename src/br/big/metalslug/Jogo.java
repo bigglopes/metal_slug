@@ -17,13 +17,13 @@ public class Jogo extends JFrame {
 	private Cenario ambiente;
 	private Player eri;
 	private SoundPlayer soundPlayer;
-	private Long FPS = (long) 1000 / 60;
+	
 	private Long quadroAnterior = 0L;
 
 	public Jogo() {
 
 		this.eri = new Player();
-		this.ambiente = new Cenario(eri.getPosicionamentoXPlayer());
+		this.ambiente = new Cenario();
 		this.soundPlayer = new SoundPlayer();
 		try {
 			this.soundPlayer.playMusic("D:\\metal_slug\\music\\stage1.wav");
@@ -45,9 +45,9 @@ public class Jogo extends JFrame {
 
 		Long agora = System.currentTimeMillis();
 
-		if ((agora - quadroAnterior) > FPS) {
+		if ((agora - quadroAnterior) > Constantes.FPS) {
 			Graphics2D g2d = (Graphics2D) g;
-			this.ambiente.render((Graphics2D) g, this.eri.getPosicionamentoXPlayer());
+			this.ambiente.render((Graphics2D) g, -this.eri.getDeslocamento());
 			this.eri.render(g2d);
 			this.quadroAnterior = agora;
 		}
