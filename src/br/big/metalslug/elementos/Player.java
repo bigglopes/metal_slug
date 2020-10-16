@@ -6,8 +6,6 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.omg.CORBA.portable.IndirectionException;
-
 import br.big.metalslug.util.ImageUtil;
 import engine.Animacao;
 import engine.Constantes;
@@ -20,7 +18,7 @@ public class Player implements KeyListener {
 
 	private char face = Constantes.RIGHT;
 
-	private int posXPlayerMundo = 300, posXPlayerTela = 300, posXPlayerInicial = 300, posYPlayer = 410;
+	private int posXPlayerMundo = 300, posXPlayerTela = 300, posXPlayerInicial = 300, posYPlayer = 373;
 
 	private List<String> quadroAnimacaoParado = new ArrayList<String>();
 	private List<String> quadroAnimacaoCorrendo = new ArrayList<String>();
@@ -72,17 +70,15 @@ public class Player implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			posXPlayerMundo += Constantes.DESLOCAMENTO;
-
 			this.face = Constantes.RIGHT;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			this.face = Constantes.LEFT;
+			//barreira no canto esquerdo da tela.
 			if (posXPlayerMundo > posXPlayerInicial) {
 				posXPlayerMundo -= Constantes.DESLOCAMENTO;
 
-				if (posXPlayerMundo < posXPlayerInicial)
-					posXPlayerTela -= Constantes.DESLOCAMENTO;
 			} else
 				pararCorrer();
 

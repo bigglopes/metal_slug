@@ -20,9 +20,9 @@ public class Cenario {
 
 	private Long quadroAnteriorNuvem = 0L;
 
-	private final int INICIO_CHAO = 150;
-	private final int INICIO_FUNDO = 270;
-	private final int INICIO_CEU = 150;
+	private final int INICIO_CHAO = 40;
+	private final int INICIO_FUNDO = 185;
+	private final int INICIO_CEU = 50;
 
 	public Cenario() {
 		try {
@@ -32,6 +32,9 @@ public class Cenario {
 			fundo.add(new Sprite(0, INICIO_FUNDO, ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES)));
 			f = new File("D:\\metal_slug\\sprites\\ambiente\\ceu.png");
 			ceu.add(new Sprite(0, INICIO_CEU, ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES)));
+			ceu.add(new Sprite(0 + ceu.get(0).getLargura() , INICIO_CEU, ceu.get(0).getImage()));
+			
+			
 
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -10,7 +10,7 @@ import engine.Constantes;
 
 public class ImageUtil {
 
-	public static BufferedImage flip(BufferedImage myImage, Character face, int qtdeVezesTamanho) {
+	public static BufferedImage flip(BufferedImage myImage, Character face, double qtdeVezesTamanho) {
 
 		AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
 		if (face == Constantes.LEFT) {
@@ -27,7 +27,7 @@ public class ImageUtil {
 
 	}
 
-	public static BufferedImage resize(BufferedImage myImage, int qtdeVezes) {
+	public static BufferedImage resize(BufferedImage myImage, double qtdeVezes) {
 		AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
 
 		tx.scale(qtdeVezes, qtdeVezes);

@@ -12,7 +12,7 @@ public class Constantes {
 	public static final int STATUS_PARADO = 0;
 	public static final int STATUS_CORRENDO = 1;
 	
-	public static final int SCALA_SPRITES = 2;
+	public static final double SCALA_SPRITES = 2.5;
 	
 	public static final  double ACOMPANHAR_TELA = 0.70;
 	
