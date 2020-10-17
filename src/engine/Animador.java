@@ -5,19 +5,29 @@ import java.util.LinkedHashMap;
 
 public class Animador {
 
-	private HashMap<String, Animacao> mapaAnimacoes = new LinkedHashMap();
+	private HashMap<String, Animacao> mapaAnimacoes = new LinkedHashMap<>();
 
 	private Animacao animacaoCorrente;
 
-	public void addAnimaaco(String nome, Animacao animacao) {
+	public void addAnimacao(String nome, Animacao animacao) {
+		animacao.setAnimador(this);
 		mapaAnimacoes.put(nome, animacao);
 	}
 
-	public void transitar(String nome) {
+	public synchronized void transitar(String nome) {
+		animacaoCorrente.resetAnimacao();
 		animacaoCorrente = mapaAnimacoes.get(nome);
+		animacaoCorrente.resetAnimacao();
 	}
 
-	public Animacao getAnimacaoCorrente() {
+	public synchronized void transitarComVinculo(String nome) {
+		Animacao temp = this.animacaoCorrente;
+		animacaoCorrente = mapaAnimacoes.get(nome);
+		animacaoCorrente.setProximaAnimacao(temp);
+		animacaoCorrente.resetAnimacao();
+	}
+
+	public synchronized Animacao getAnimacaoCorrente() {
 		if (animacaoCorrente == null)
 			throw new UnsupportedOperationException("Erro no fluxo de animacao");
 		return animacaoCorrente;

@@ -7,71 +7,84 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.Animacao;
+import engine.Animador;
 import engine.Constantes;
 
 public class Player implements KeyListener {
 
-	private Animacao animacaoCorrente;
-	private Animacao animacaoCorrente2;
-	private Animacao animacaoCorrente3;
-	private Animacao animacaoCorrente4;
+	private final String ANIMACAO_CORRENDO = "correndo";
+	private final String ANIMACAO_PARADO = "parado";
+	private final String ANIMACAO_ATIRANDO = "atirando";
 
 	private int status = 0;
 
 	private char face = Constantes.RIGHT;
 
-	private int posXPlayerMundo = 300, posXPlayerTela = 300, posXPlayerInicial = 300, posYPlayer = 373;
+	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayer = 373;
 
-	private int pos1XPlayerMundo = 200, pos1XPlayerTela = 198, pos1XPlayerInicial = 300, pos1YPlayer = 373;
-	private int pos2XPlayerTela = 200, pos2YPlayer = 410;
+	private int parteSuperiorPos1XPlayerTela = 197, parteSuperiorPosYPlayerTela = 373;
+	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = 410;
 
-	private List<String> quadroAnimacaoParado = new ArrayList<String>();
-	private List<String> quadroAnimacaoCorrendo = new ArrayList<String>();
+	private List<String> quadroAnimacaoParadoSuperior = new ArrayList<String>();
+	private List<String> quadroAnimacaoParadoInferior = new ArrayList<String>();
 
 	private List<String> quadroAnimacaoCorrendoParteSuperior = new ArrayList<String>();
 	private List<String> quadroAnimacaoCorrendoParteInferior = new ArrayList<String>();
 	private List<String> quadroAnimacaoAtirandoParteSuperior = new ArrayList<String>();
 
+	private Animador animadorSuperior = new Animador();
+	private Animador animadorInferior = new Animador();
+
+	private List<String> initListaQuadros(String padrao, int qtdeQuadros) {
+		List<String> result = new ArrayList<String>();
+
+		for (int i = 1; i <= qtdeQuadros; i++)
+			result.add(String.format(padrao, i));
+
+		return result;
+	}
+
 	public Player() {
 
-		for (int i = 1; i <= 4; i++)
-			quadroAnimacaoParado.add(String.format("D:\\metal_slug\\sprites\\eri\\parado\\q%d.png", i));
+		this.quadroAnimacaoParadoSuperior = initListaQuadros("D:\\metal_slug\\sprites\\eri\\parado\\f%d.png", 4);
+		this.quadroAnimacaoAtirandoParteSuperior = initListaQuadros("D:\\metal_slug\\sprites\\eri\\tiro\\t%d.png", 10);
+		this.quadroAnimacaoCorrendoParteSuperior = initListaQuadros(
+				"D:\\metal_slug\\sprites\\eri\\correndo_2partes\\fc%d.png", 12);
 
-		for (int i = 1; i <= 16; i++)
-			quadroAnimacaoCorrendo.add(String.format("D:\\metal_slug\\sprites\\eri\\correndo\\q%d.png", i));
+		this.quadroAnimacaoParadoInferior = initListaQuadros("D:\\metal_slug\\sprites\\eri\\parado\\base%d.png", 1);
+		this.quadroAnimacaoCorrendoParteInferior = initListaQuadros(
+				"D:\\metal_slug\\sprites\\eri\\correndo_2partes\\fb%d.png", 16);
 
-		for (int i = 1; i <= 16; i++)
-			quadroAnimacaoCorrendoParteInferior
-					.add(String.format("D:\\metal_slug\\sprites\\eri\\correndo_2partes\\fb%d.png", i));
+		Animacao animacaoParadoSuperior = new Animacao(quadroAnimacaoParadoSuperior, 0,
+				Constantes.DURACAO_QUADRO_PARADO, true);
+		Animacao animacaoCorrendoSuperior = new Animacao(quadroAnimacaoCorrendoParteSuperior, 4,
+				Constantes.DURACAO_QUADRO_CORRENDO, true);
+		Animacao animacaoAtirandoCorrendo = new Animacao(quadroAnimacaoAtirandoParteSuperior, 0,
+				Constantes.DURACAO_QUADRO_CORRENDO, false);
+		animadorSuperior.addAnimacao(ANIMACAO_PARADO, animacaoParadoSuperior);
+		animadorSuperior.addAnimacao(ANIMACAO_CORRENDO, animacaoCorrendoSuperior);
+		animadorSuperior.addAnimacao(ANIMACAO_ATIRANDO, animacaoAtirandoCorrendo);
 
-		for (int i = 1; i <= 12; i++)
-			quadroAnimacaoCorrendoParteSuperior
-					.add(String.format("D:\\metal_slug\\sprites\\eri\\correndo_2partes\\fc%d.png", i));
-		
-		for (int i = 1; i <= 10; i++)
-			quadroAnimacaoAtirandoParteSuperior
-					.add(String.format("D:\\metal_slug\\sprites\\eri\\tiro\\t%d.png", i));
+		Animacao animacaoParadoInferior = new Animacao(quadroAnimacaoParadoInferior, 0,
+				Constantes.DURACAO_QUADRO_PARADO, true);
+		Animacao animacaoCorrendoInferior = new Animacao(quadroAnimacaoCorrendoParteInferior, 4,
+				Constantes.DURACAO_QUADRO_CORRENDO, true);
+		animadorInferior.addAnimacao(ANIMACAO_PARADO, animacaoParadoInferior);
+		animadorInferior.addAnimacao(ANIMACAO_CORRENDO, animacaoCorrendoInferior);
 
-		animacaoCorrente = new Animacao(quadroAnimacaoParado, 0, Constantes.DURACAO_QUADRO_PARADO , true );
-		animacaoCorrente2 = new Animacao(quadroAnimacaoCorrendoParteSuperior, 4, Constantes.DURACAO_QUADRO_CORRENDO , true );
-		animacaoCorrente3 = new Animacao(quadroAnimacaoCorrendoParteInferior, 4, Constantes.DURACAO_QUADRO_CORRENDO , true );
-		animacaoCorrente4 = new Animacao(quadroAnimacaoAtirandoParteSuperior, 0, Constantes.DURACAO_QUADRO_CORRENDO , true );
+		animadorSuperior.setAnimacaoCorrente(animacaoParadoSuperior);
+		animadorInferior.setAnimacaoCorrente(animacaoParadoInferior);
 
 		this.status = Constantes.STATUS_PARADO;
 	}
 
 	public void render(Graphics2D g) {
-		this.animacaoCorrente.render(g, this.face == Constantes.LEFT, posXPlayerTela, posYPlayer);
 
-		if (this.status == Constantes.STATUS_CORRENDO) {
+		this.animadorInferior.getAnimacaoCorrente().render(g, this.face == Constantes.LEFT, parteInferiorXPlayerTela,
+				parteInferiorYPlayerTela);
 
-			this.animacaoCorrente3.render(g, this.face == Constantes.LEFT, pos2XPlayerTela, pos2YPlayer);
-
-		//	this.animacaoCorrente2.render(g, this.face == Constantes.LEFT, pos1XPlayerTela, pos1YPlayer);
-			
-			this.animacaoCorrente4.render(g, this.face == Constantes.LEFT, pos1XPlayerTela, pos1YPlayer);
-
-		}
+		this.animadorSuperior.getAnimacaoCorrente().render(g, this.face == Constantes.LEFT,
+				parteSuperiorPos1XPlayerTela, parteSuperiorPosYPlayerTela);
 
 	}
 
@@ -97,6 +110,10 @@ public class Player implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			atirar();
+		}
+
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
 			correr();
 		}
@@ -119,23 +136,33 @@ public class Player implements KeyListener {
 
 	}
 
+	private synchronized void atirar() {
+		animadorSuperior.transitarComVinculo(ANIMACAO_ATIRANDO);
+	}
+
 	private synchronized void correr() {
 		if (status == Constantes.STATUS_PARADO) {
 			status = Constantes.STATUS_CORRENDO;
-			animacaoCorrente = new Animacao(quadroAnimacaoCorrendo, 4, Constantes.DURACAO_QUADRO_CORRENDO , true );
+
+			animadorInferior.transitar(ANIMACAO_CORRENDO);
+			animadorSuperior.transitar(ANIMACAO_CORRENDO);
 		}
 	}
 
 	private synchronized void pararCorrer() {
 		if (status == Constantes.STATUS_CORRENDO) {
 			status = Constantes.STATUS_PARADO;
-			animacaoCorrente = new Animacao(quadroAnimacaoParado, 0, Constantes.DURACAO_QUADRO_PARADO , true );
+
+			animadorInferior.transitar(ANIMACAO_PARADO);
+			animadorSuperior.transitar(ANIMACAO_PARADO);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		pararCorrer();
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
+			pararCorrer();
+		}
 	}
 
 	@Override

@@ -4,7 +4,7 @@ public class Constantes {
 	public static final char RIGHT = 'R';
 	public static final char LEFT = 'L';
 
-	public static final long DURACAO_QUADRO_PARADO = 400;
+	public static final long DURACAO_QUADRO_PARADO = 500;
 	public static final long DURACAO_QUADRO_CORRENDO = 30;
 	public static final long DURACAO_QUADRO_ATIRANDO = 50;
 

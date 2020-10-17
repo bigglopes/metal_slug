@@ -13,13 +13,13 @@ import br.big.metalslug.util.ImageUtil;
 
 public class Animacao {
 
-	private List<BufferedImage> bases = new ArrayList<BufferedImage>();
+	private List<BufferedImage> quadros = new ArrayList<BufferedImage>();
 
-	private int quadroBase = 0;
+	private int quadroCorrenteAnimacao = 0;
 
 	private Long duracaoQuadro = 50L;
 
-	private Long quadroAnimacaoBase = 0L;
+	private Long ultimaAtualizacaoQuadro = 0L;
 
 	private int quadroRestart;
 
@@ -36,7 +36,7 @@ public class Animacao {
 			this.quadroRestart = quadroRestart;
 			for (String b : bases) {
 				File f = new File(b);
-				this.bases.add(ImageIO.read(f));
+				this.quadros.add(ImageIO.read(f));
 			}
 
 		} catch (IOException e) {
@@ -48,15 +48,15 @@ public class Animacao {
 
 		long agora = System.currentTimeMillis();
 
-		BufferedImage quadro = this.bases.get(quadroBase);
+		BufferedImage quadro = this.quadros.get(quadroCorrenteAnimacao);
 
-		if ((agora - quadroAnimacaoBase) > duracaoQuadro) {
-			quadroBase++;
-			quadroAnimacaoBase = agora;
+		if ((agora - ultimaAtualizacaoQuadro) > duracaoQuadro) {
+			quadroCorrenteAnimacao++;
+			ultimaAtualizacaoQuadro = agora;
 
-			if (quadroBase == this.bases.size())
+			if (quadroCorrenteAnimacao == this.quadros.size())
 				if (loop)
-					this.quadroBase = this.quadroRestart;
+					this.quadroCorrenteAnimacao = this.quadroRestart;
 				else
 					animador.setAnimacaoCorrente(proximaAnimacao);
 		}
@@ -82,6 +82,12 @@ public class Animacao {
 
 	public void setProximaAnimacao(Animacao proximaAnimacao) {
 		this.proximaAnimacao = proximaAnimacao;
+	}
+	
+	public void resetAnimacao()
+	{
+		this.ultimaAtualizacaoQuadro = 0L;
+		this.quadroCorrenteAnimacao = 0;
 	}
 
 }
