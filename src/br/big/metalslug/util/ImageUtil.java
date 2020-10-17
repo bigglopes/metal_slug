@@ -1,28 +1,21 @@
 package br.big.metalslug.util;
 
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-import br.big.metalslug.elementos.Sprite;
-import engine.Constantes;
-
 public class ImageUtil {
 
-	public static BufferedImage flip(BufferedImage myImage, Character face, double qtdeVezesTamanho) {
+	public static BufferedImage flip(BufferedImage myImage, boolean flip , double qtdeVezesTamanho) {
 
-		AffineTransform tx = AffineTransform.getScaleInstance(1, 1);
-		if (face == Constantes.LEFT) {
-			tx = AffineTransform.getScaleInstance(-1, 1);
+		BufferedImage tmp = myImage;
+		if ( flip ) {
+			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 			tx.translate(-myImage.getWidth(null), 0);
-		} else {
-			tx.translate(myImage.getWidth(null), 0);
+			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			tmp = op.filter(myImage, null);
 		}
-
-		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-		BufferedImage tmp = op.filter(myImage, null);
-
+		
 		return resize(tmp, qtdeVezesTamanho);
 
 	}
@@ -35,8 +28,5 @@ public class ImageUtil {
 		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 		return op.filter(myImage, null);
 	}
-	
-	
-
 
 }
