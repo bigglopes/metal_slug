@@ -3,6 +3,7 @@ package br.big.metalslug.elementos;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +28,13 @@ public class Cenario {
 
 	public Cenario() {
 		try {
-			File f = new File("D:\\metal_slug\\sprites\\ambiente\\chao.png");
-			chao.add(new Sprite(0, INICIO_CHAO, ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES)));
-			f = new File("D:\\metal_slug\\sprites\\ambiente\\fundo.png");
-			fundo.add(new Sprite(0, INICIO_FUNDO, ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES)));
-			f = new File("D:\\metal_slug\\sprites\\ambiente\\ceu.png");
-			ceu.add(new Sprite(0, INICIO_CEU, ImageUtil.resize(ImageIO.read(f), Constantes.SCALA_SPRITES)));
-			ceu.add(new Sprite(0 + ceu.get(0).getLargura() , INICIO_CEU, ceu.get(0).getImage()));
-			
-			
+			InputStream is = this.getClass().getResourceAsStream("/sprites/ambiente/chao.png");
+			chao.add(new Sprite(0, INICIO_CHAO, ImageUtil.resize(ImageIO.read(is), Constantes.SCALA_SPRITES)));
+			is = this.getClass().getResourceAsStream("/sprites/ambiente/fundo.png");
+			fundo.add(new Sprite(0, INICIO_FUNDO, ImageUtil.resize(ImageIO.read(is), Constantes.SCALA_SPRITES)));
+			is = this.getClass().getResourceAsStream("/sprites/ambiente/ceu.png");
+			ceu.add(new Sprite(0, INICIO_CEU, ImageUtil.resize(ImageIO.read(is), Constantes.SCALA_SPRITES)));
+			ceu.add(new Sprite(0 + ceu.get(0).getLargura(), INICIO_CEU, ceu.get(0).getImage()));
 
 		} catch (IOException e) {
 			e.printStackTrace();

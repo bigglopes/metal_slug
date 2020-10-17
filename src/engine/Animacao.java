@@ -35,7 +35,7 @@ public class Animacao {
 			this.loop = loop;
 			this.quadroRestart = quadroRestart;
 			for (String pathQuadro : pathQuadros) {
-				InputStream is = getClass().getClassLoader().getResourceAsStream( pathQuadro );
+				InputStream is = getClass().getResourceAsStream( pathQuadro );
 				this.quadros.add(ImageIO.read(is));
 			}
 

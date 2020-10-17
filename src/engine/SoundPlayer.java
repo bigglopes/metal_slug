@@ -9,7 +9,7 @@ public class SoundPlayer {
 	private Clip clip;
 
 	public void playMusic(String music) throws Exception {
-		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getClassLoader().getResourceAsStream( music ));
+		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream( music ));
 		clip = AudioSystem.getClip();
 		clip.open(audioInputStream);
 		clip.start();

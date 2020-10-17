@@ -1,5 +1,6 @@
 package br.big.metalslug;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -20,7 +21,7 @@ public class Jogo extends JFrame {
 	
 	private Long quadroAnterior = 0L;
 	
-	private final String MUSICA_ESTAGIO_1 = "music\\stage1.wav";
+	private final String MUSICA_ESTAGIO_1 = "/music/stage1.wav";
 
 	public Jogo() {
 
@@ -39,6 +40,7 @@ public class Jogo extends JFrame {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		this.setBackground(Color.BLACK);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
