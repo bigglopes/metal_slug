@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import br.big.metalslug.util.ImageUtil;
 import engine.Constantes;
+import engine.Sprite;
 
 public class Cenario {
 	private List<Sprite> chao = new ArrayList<Sprite>();

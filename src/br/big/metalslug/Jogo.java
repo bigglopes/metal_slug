@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 
 import br.big.metalslug.elementos.Cenario;
 import br.big.metalslug.elementos.Player;
-import br.big.metalslug.elementos.SoundPlayer;
 import engine.Constantes;
+import engine.SoundPlayer;
 
 public class Jogo extends JFrame {
 

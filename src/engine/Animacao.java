@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import br.big.metalslug.elementos.Animador;
 import br.big.metalslug.util.ImageUtil;
 
 public class Animacao {
