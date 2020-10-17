@@ -46,14 +46,14 @@ public class Player implements KeyListener {
 
 	public Player() {
 
-		this.quadroAnimacaoParadoSuperior = initListaQuadros("D:\\metal_slug\\sprites\\eri\\parado\\f%d.png", 4);
-		this.quadroAnimacaoAtirandoParteSuperior = initListaQuadros("D:\\metal_slug\\sprites\\eri\\tiro\\t%d.png", 10);
+		this.quadroAnimacaoParadoSuperior = initListaQuadros("sprites\\eri\\parado\\f%d.png", 4);
+		this.quadroAnimacaoAtirandoParteSuperior = initListaQuadros("sprites\\eri\\tiro\\t%d.png", 10);
 		this.quadroAnimacaoCorrendoParteSuperior = initListaQuadros(
-				"D:\\metal_slug\\sprites\\eri\\correndo_2partes\\fc%d.png", 12);
+				"sprites\\eri\\correndo_2partes\\fc%d.png", 12);
 
-		this.quadroAnimacaoParadoInferior = initListaQuadros("D:\\metal_slug\\sprites\\eri\\parado\\base%d.png", 1);
+		this.quadroAnimacaoParadoInferior = initListaQuadros("sprites\\eri\\parado\\base%d.png", 1);
 		this.quadroAnimacaoCorrendoParteInferior = initListaQuadros(
-				"D:\\metal_slug\\sprites\\eri\\correndo_2partes\\fb%d.png", 16);
+				"sprites\\eri\\correndo_2partes\\fb%d.png", 16);
 
 		Animacao animacaoParadoSuperior = new Animacao(quadroAnimacaoParadoSuperior, 0,
 				Constantes.DURACAO_QUADRO_PARADO, true);

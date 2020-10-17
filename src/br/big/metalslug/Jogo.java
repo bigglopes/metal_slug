@@ -19,6 +19,8 @@ public class Jogo extends JFrame {
 	private SoundPlayer soundPlayer;
 	
 	private Long quadroAnterior = 0L;
+	
+	private final String MUSICA_ESTAGIO_1 = "music\\stage1.wav";
 
 	public Jogo() {
 
@@ -26,7 +28,7 @@ public class Jogo extends JFrame {
 		this.ambiente = new Cenario();
 		this.soundPlayer = new SoundPlayer();
 		try {
-			this.soundPlayer.playMusic("D:\\metal_slug\\music\\stage1.wav");
+			this.soundPlayer.playMusic(MUSICA_ESTAGIO_1);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

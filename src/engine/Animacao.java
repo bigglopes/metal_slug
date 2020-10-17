@@ -2,8 +2,8 @@ package engine;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +29,14 @@ public class Animacao {
 
 	private boolean loop;
 
-	public Animacao(List<String> bases, int quadroRestart, long duracaoQuadro, boolean loop) {
+	public Animacao(List<String> pathQuadros, int quadroRestart, long duracaoQuadro, boolean loop) {
 		try {
 			this.duracaoQuadro = duracaoQuadro;
 			this.loop = loop;
 			this.quadroRestart = quadroRestart;
-			for (String b : bases) {
-				File f = new File(b);
-				this.quadros.add(ImageIO.read(f));
+			for (String pathQuadro : pathQuadros) {
+				InputStream is = getClass().getClassLoader().getResourceAsStream( pathQuadro );
+				this.quadros.add(ImageIO.read(is));
 			}
 
 		} catch (IOException e) {
