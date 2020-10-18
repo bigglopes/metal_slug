@@ -1,16 +1,19 @@
 package br.com.big.metalslug.elementos;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.big.metalslug.engine.Animacao;
 import br.com.big.metalslug.engine.Animador;
 import br.com.big.metalslug.engine.Constantes;
+import br.com.big.metalslug.engine.GameObject;
 
-public class Player implements KeyListener {
+public class Player extends GameObject implements KeyListener {
 
 	private final String ANIMACAO_CORRENDO = "correndo";
 	private final String ANIMACAO_PARADO = "parado";
@@ -22,7 +25,7 @@ public class Player implements KeyListener {
 
 	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayer = 373;
 
-	private int parteSuperiorPos1XPlayerTela = 200, parteSuperiorPosYPlayerTela = 373;
+	private int parteSuperiorXPlayerTela = 200, parteSuperiorYPlayerTela = 373;
 	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = 410;
 
 	private List<String> quadroAnimacaoParadoSuperior = new ArrayList<String>();
@@ -36,6 +39,9 @@ public class Player implements KeyListener {
 	private Animador animadorInferior = new Animador();
 
 	private boolean tiroPressionado = false;
+
+	// TODO BASEADO NO QUADRO ATUALIZAR LARGURA DO RETANGULO E A
+	private Rectangle rectangle = new Rectangle(parteSuperiorXPlayerTela, parteSuperiorYPlayerTela, 30, 60);
 
 	private List<String> initListaQuadros(String padrao, int qtdeQuadros) {
 		List<String> result = new ArrayList<String>();
@@ -80,11 +86,22 @@ public class Player implements KeyListener {
 
 	public void render(Graphics2D g) {
 
-		this.animadorInferior.getAnimacaoCorrente().render(g, this.face == Constantes.LEFT, parteInferiorXPlayerTela,
-				parteInferiorYPlayerTela);
+		Animacao aimacaoInferior = this.animadorInferior.getAnimacaoCorrente();
+		aimacaoInferior.render(g, this.face == Constantes.LEFT, parteInferiorXPlayerTela, parteInferiorYPlayerTela);
 
-		this.animadorSuperior.getAnimacaoCorrente().render(g, this.face == Constantes.LEFT,
-				parteSuperiorPos1XPlayerTela, parteSuperiorPosYPlayerTela);
+		Animacao animacaoSuperior = this.animadorSuperior.getAnimacaoCorrente();
+		animacaoSuperior.render(g, this.face == Constantes.LEFT, parteSuperiorXPlayerTela, parteSuperiorYPlayerTela);
+
+		int largura = (int) (1
+				* (aimacaoInferior.getLarguraQuadroCorrente() + animacaoSuperior.getLarguraQuadroCorrente()));
+		int altura = (int) (1.9
+				* (aimacaoInferior.getAlturaQuadroCorrente() + animacaoSuperior.getAlturaQuadroCorrente()));
+
+		this.rectangle = new Rectangle(this.parteSuperiorXPlayerTela, parteSuperiorYPlayerTela, largura, altura);
+
+		if (Constantes.LIGAR_COLLIDERS)
+			g.drawRect((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(),
+					(int) rectangle.getHeight());
 
 	}
 
@@ -174,6 +191,29 @@ public class Player implements KeyListener {
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void addX(int valor) {
+		this.parteInferiorXPlayerTela += valor;
+		this.parteSuperiorXPlayerTela += valor;
+	}
+
+	@Override
+	public void addY(int valor) {
+		this.parteInferiorYPlayerTela += valor;
+		this.parteSuperiorYPlayerTela += valor;
+
+	}
+
+	@Override
+	public boolean sofreComGravidade() {
+		return true;
+	}
+
+	@Override
+	public Rectangle getDimensoes() {
+		return this.rectangle;
 	}
 
 }

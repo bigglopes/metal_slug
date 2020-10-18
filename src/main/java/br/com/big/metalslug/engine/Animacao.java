@@ -56,8 +56,7 @@ public class Animacao {
 			if (quadroCorrenteAnimacao == this.quadros.size())
 				if (loop)
 					this.quadroCorrenteAnimacao = this.quadroRestart;
-				else
-				{
+				else {
 					this.quadroCorrenteAnimacao = 0;
 					animador.setAnimacaoCorrente(proximaAnimacao);
 				}
@@ -89,6 +88,14 @@ public class Animacao {
 	public synchronized void resetAnimacao() {
 		this.ultimaAtualizacaoQuadro = 0L;
 		this.quadroCorrenteAnimacao = 0;
+	}
+
+	public int getLarguraQuadroCorrente() {
+		return this.getQuadroAtual().getWidth();
+	}
+
+	public int getAlturaQuadroCorrente() {
+		return this.getQuadroAtual().getHeight();
 	}
 
 }
