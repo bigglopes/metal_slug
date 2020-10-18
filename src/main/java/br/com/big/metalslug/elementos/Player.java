@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.big.metalslug.engine.Animacao;
+import br.com.big.metalslug.engine.AnimacaoCiclica;
 import br.com.big.metalslug.engine.Animador;
 import br.com.big.metalslug.engine.Constantes;
 import br.com.big.metalslug.engine.GameObject;
@@ -25,10 +26,10 @@ public class Player extends GameObject implements KeyListener {
 
 	private char face = Constantes.RIGHT;
 
-	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayer = 310;
+	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayer = 290;
 
 	private int parteSuperiorXPlayerTela = 200, parteSuperiorYPlayerTela = posYPlayer;
-	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = posYPlayer+37;
+	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = posYPlayer + 37;
 
 	private List<String> quadroAnimacaoParadoSuperior = new ArrayList<String>();
 	private List<String> quadroAnimacaoParadoInferior = new ArrayList<String>();
@@ -41,8 +42,6 @@ public class Player extends GameObject implements KeyListener {
 	private Animador animadorInferior = new Animador();
 
 	private boolean tiroPressionado = false;
-
-	private Impulso impulso = new Impulso(this);
 
 	private boolean pulando = true;
 
@@ -68,19 +67,19 @@ public class Player extends GameObject implements KeyListener {
 		this.quadroAnimacaoParadoInferior = initListaQuadros("/sprites/eri/parado/base%d.png", 1);
 		this.quadroAnimacaoCorrendoParteInferior = initListaQuadros("/sprites/eri/correndo_2partes/fb%d.png", 16);
 
-		Animacao animacaoParadoSuperior = new Animacao(quadroAnimacaoParadoSuperior, 0,
+		AnimacaoCiclica animacaoParadoSuperior = new AnimacaoCiclica(quadroAnimacaoParadoSuperior, 0,
 				Constantes.DURACAO_QUADRO_PARADO, true);
-		Animacao animacaoCorrendoSuperior = new Animacao(quadroAnimacaoCorrendoParteSuperior, 4,
+		AnimacaoCiclica animacaoCorrendoSuperior = new AnimacaoCiclica(quadroAnimacaoCorrendoParteSuperior, 4,
 				Constantes.DURACAO_QUADRO_CORRENDO, true);
-		Animacao animacaoAtirandoCorrendo = new Animacao(quadroAnimacaoAtirandoParteSuperior, 0,
+		AnimacaoCiclica animacaoAtirandoCorrendo = new AnimacaoCiclica(quadroAnimacaoAtirandoParteSuperior, 0,
 				Constantes.DURACAO_QUADRO_CORRENDO, false);
 		animadorSuperior.addAnimacao(ANIMACAO_PARADO, animacaoParadoSuperior);
 		animadorSuperior.addAnimacao(ANIMACAO_CORRENDO, animacaoCorrendoSuperior);
 		animadorSuperior.addAnimacao(ANIMACAO_ATIRANDO, animacaoAtirandoCorrendo);
 
-		Animacao animacaoParadoInferior = new Animacao(quadroAnimacaoParadoInferior, 0,
+		AnimacaoCiclica animacaoParadoInferior = new AnimacaoCiclica(quadroAnimacaoParadoInferior, 0,
 				Constantes.DURACAO_QUADRO_PARADO, true);
-		Animacao animacaoCorrendoInferior = new Animacao(quadroAnimacaoCorrendoParteInferior, 4,
+		AnimacaoCiclica animacaoCorrendoInferior = new AnimacaoCiclica(quadroAnimacaoCorrendoParteInferior, 4,
 				Constantes.DURACAO_QUADRO_CORRENDO, true);
 		animadorInferior.addAnimacao(ANIMACAO_PARADO, animacaoParadoInferior);
 		animadorInferior.addAnimacao(ANIMACAO_CORRENDO, animacaoCorrendoInferior);
@@ -107,7 +106,6 @@ public class Player extends GameObject implements KeyListener {
 		this.collider = new RectangleCollider(this.parteSuperiorXPlayerTela, parteSuperiorYPlayerTela, largura, altura);
 
 		ImageUtil.drawCollider(g, this.collider.getDimensoes());
-
 	}
 
 	public synchronized int getDeslocamento() {
@@ -190,6 +188,12 @@ public class Player extends GameObject implements KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			tiroPressionado = false;
 		}
+
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			Impulso.getInstance().setGameObject(this);
+			Impulso.getInstance().setValorX(0);
+			Impulso.getInstance().setValorY(-9);
+		}
 	}
 
 	@Override
@@ -223,11 +227,6 @@ public class Player extends GameObject implements KeyListener {
 	@Override
 	public Rectangle getDimensoes() {
 		return this.collider;
-	}
-
-	@Override
-	public Impulso temImpulso() {
-		return this.impulso;
 	}
 
 	@Override

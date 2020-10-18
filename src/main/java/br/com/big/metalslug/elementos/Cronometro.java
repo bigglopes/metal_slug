@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.big.metalslug.engine.Animacao;
+import br.com.big.metalslug.engine.AnimacaoCiclica;
 import br.com.big.metalslug.engine.Animador;
 import br.com.big.metalslug.engine.Constantes;
 
@@ -26,7 +26,7 @@ public class Cronometro {
 		for (int i = 0; i <= 9; i++) {
 			List<String> quadros = new ArrayList<String>();
 			quadros.add(String.format(padrao, i));
-			Animacao animacao = new Animacao(quadros, 0, Constantes.SEGUNDO, true);
+			AnimacaoCiclica animacao = new AnimacaoCiclica(quadros, 0, Constantes.SEGUNDO, true);
 			animadorNumero1.addAnimacao("numero" + i, animacao);
 			animadorNumero1.setAnimacaoCorrente(animacao);
 			animadorNumero2.addAnimacao("numero" + i, animacao);

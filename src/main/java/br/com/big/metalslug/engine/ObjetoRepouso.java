@@ -25,10 +25,6 @@ public abstract class ObjetoRepouso extends GameObject {
 
 	}
 
-	@Override
-	public Impulso temImpulso() {
-		System.out.println("Operacao nao suportada temImpulso");
-		return null;
-	}
+	
 
 }

@@ -10,6 +10,4 @@ public abstract class GameObject implements Collider {
 
 	public abstract void desativarGravidade();
 
-	public abstract Impulso temImpulso();
-
 }

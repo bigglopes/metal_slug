@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import br.com.big.metalslug.engine.Constantes;
 import br.com.big.metalslug.engine.Gravidade;
+import br.com.big.metalslug.engine.Impulso;
 import br.com.big.metalslug.engine.SoundPlayer;
 
 public class Jogo extends JFrame {
@@ -26,7 +27,7 @@ public class Jogo extends JFrame {
 	public Jogo() {
 
 		Gravidade.getInstance().adicionarComponentesColisao(player);
-		Gravidade.getInstance().adicionarComponentesColisao(ambiente.getColliders() );
+		Gravidade.getInstance().adicionarComponentesColisao(ambiente.getColliders());
 		try {
 			this.soundPlayer.playMusic(MUSICA_ESTAGIO_1);
 		} catch (Exception ex) {
@@ -48,6 +49,7 @@ public class Jogo extends JFrame {
 		Long agora = System.currentTimeMillis();
 
 		if ((agora - quadroAnterior) > Constantes.FPS) {
+			Impulso.getInstance().consumirImpulso();
 			Gravidade.getInstance().aplicarGravidade();
 			Graphics2D g2d = (Graphics2D) g;
 			this.ambiente.render((Graphics2D) g, -this.player.getDeslocamento());
