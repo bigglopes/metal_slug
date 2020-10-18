@@ -9,6 +9,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import br.com.big.metalslug.engine.Constantes;
+import br.com.big.metalslug.engine.GameObject;
+import br.com.big.metalslug.engine.RectangleCollider;
 import br.com.big.metalslug.engine.Sprite;
 import br.com.big.metalslug.util.ImageUtil;
 
@@ -34,10 +36,17 @@ public class Cenario {
 			is = this.getClass().getResourceAsStream("/sprites/ambiente/ceu.png");
 			ceu.add(new Sprite(0, INICIO_CEU, ImageUtil.resize(ImageIO.read(is), Constantes.SCALA_SPRITES)));
 			ceu.add(new Sprite(0 + ceu.get(0).getLargura(), INICIO_CEU, ceu.get(0).getImage()));
+			chao.get(0).setCollider(new RectangleCollider(0, INICIO_CHAO + 430, chao.get(0).getLargura(), 30));
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public GameObject[] getColliders() {
+		GameObject gameObjects  [] = new GameObject[ this.chao.size() ];
+		this.chao.toArray(gameObjects);
+		return gameObjects;
 	}
 
 	public void render(Graphics2D g, int deslocamento) {

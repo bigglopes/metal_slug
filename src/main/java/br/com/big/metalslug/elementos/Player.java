@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,9 @@ import br.com.big.metalslug.engine.Animacao;
 import br.com.big.metalslug.engine.Animador;
 import br.com.big.metalslug.engine.Constantes;
 import br.com.big.metalslug.engine.GameObject;
+import br.com.big.metalslug.engine.Impulso;
+import br.com.big.metalslug.engine.RectangleCollider;
+import br.com.big.metalslug.util.ImageUtil;
 
 public class Player extends GameObject implements KeyListener {
 
@@ -23,10 +25,10 @@ public class Player extends GameObject implements KeyListener {
 
 	private char face = Constantes.RIGHT;
 
-	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayer = 373;
+	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayer = 310;
 
-	private int parteSuperiorXPlayerTela = 200, parteSuperiorYPlayerTela = 373;
-	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = 410;
+	private int parteSuperiorXPlayerTela = 200, parteSuperiorYPlayerTela = posYPlayer;
+	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = posYPlayer+37;
 
 	private List<String> quadroAnimacaoParadoSuperior = new ArrayList<String>();
 	private List<String> quadroAnimacaoParadoInferior = new ArrayList<String>();
@@ -40,8 +42,13 @@ public class Player extends GameObject implements KeyListener {
 
 	private boolean tiroPressionado = false;
 
+	private Impulso impulso = new Impulso(this);
+
+	private boolean pulando = true;
+
 	// TODO BASEADO NO QUADRO ATUALIZAR LARGURA DO RETANGULO E A
-	private Rectangle rectangle = new Rectangle(parteSuperiorXPlayerTela, parteSuperiorYPlayerTela, 30, 60);
+	private RectangleCollider collider = new RectangleCollider(parteSuperiorXPlayerTela, parteSuperiorYPlayerTela, 30,
+			60);
 
 	private List<String> initListaQuadros(String padrao, int qtdeQuadros) {
 		List<String> result = new ArrayList<String>();
@@ -97,11 +104,9 @@ public class Player extends GameObject implements KeyListener {
 		int altura = (int) (1.9
 				* (aimacaoInferior.getAlturaQuadroCorrente() + animacaoSuperior.getAlturaQuadroCorrente()));
 
-		this.rectangle = new Rectangle(this.parteSuperiorXPlayerTela, parteSuperiorYPlayerTela, largura, altura);
+		this.collider = new RectangleCollider(this.parteSuperiorXPlayerTela, parteSuperiorYPlayerTela, largura, altura);
 
-		if (Constantes.LIGAR_COLLIDERS)
-			g.drawRect((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(),
-					(int) rectangle.getHeight());
+		ImageUtil.drawCollider(g, this.collider.getDimensoes());
 
 	}
 
@@ -197,23 +202,38 @@ public class Player extends GameObject implements KeyListener {
 	public void addX(int valor) {
 		this.parteInferiorXPlayerTela += valor;
 		this.parteSuperiorXPlayerTela += valor;
+		this.collider = new RectangleCollider(this.collider.getX() + valor, this.collider.getY(),
+				this.collider.getWidth(), this.collider.getHeight());
 	}
 
 	@Override
 	public void addY(int valor) {
 		this.parteInferiorYPlayerTela += valor;
 		this.parteSuperiorYPlayerTela += valor;
+		this.collider = new RectangleCollider(this.collider.getX(), this.collider.getY() + valor,
+				this.collider.getWidth(), this.collider.getHeight());
 
 	}
 
 	@Override
 	public boolean sofreComGravidade() {
-		return true;
+		return pulando;
 	}
 
 	@Override
 	public Rectangle getDimensoes() {
-		return this.rectangle;
+		return this.collider;
+	}
+
+	@Override
+	public Impulso temImpulso() {
+		return this.impulso;
+	}
+
+	@Override
+	public void desativarGravidade() {
+		this.pulando = false;
+
 	}
 
 }
