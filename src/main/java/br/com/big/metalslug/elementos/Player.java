@@ -22,7 +22,7 @@ public class Player implements KeyListener {
 
 	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayer = 373;
 
-	private int parteSuperiorPos1XPlayerTela = 197, parteSuperiorPosYPlayerTela = 373;
+	private int parteSuperiorPos1XPlayerTela = 200, parteSuperiorPosYPlayerTela = 373;
 	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = 410;
 
 	private List<String> quadroAnimacaoParadoSuperior = new ArrayList<String>();
