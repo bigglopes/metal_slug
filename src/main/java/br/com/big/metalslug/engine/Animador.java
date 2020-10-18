@@ -24,7 +24,8 @@ public class Animador {
 		this.animacaoCorrente.resetAnimacao();
 		Animacao temp = this.animacaoCorrente;
 		animacaoCorrente = mapaAnimacoes.get(nome);
-		animacaoCorrente.setProximaAnimacao(temp);
+		if (animacaoCorrente != temp)
+			animacaoCorrente.setProximaAnimacao(temp);
 		animacaoCorrente.resetAnimacao();
 	}
 

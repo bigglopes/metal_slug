@@ -47,7 +47,6 @@ public class Animacao {
 	public synchronized BufferedImage getQuadroAtual() {
 
 		long agora = System.currentTimeMillis();
-		System.out.println(quadros.size());
 		BufferedImage quadro = this.quadros.get(quadroCorrenteAnimacao);
 
 		if ((agora - ultimaAtualizacaoQuadro) > duracaoQuadro) {
