@@ -21,6 +21,7 @@ public class Animador {
 	}
 
 	public synchronized void transitarComVinculo(String nome) {
+		this.animacaoCorrente.resetAnimacao();
 		Animacao temp = this.animacaoCorrente;
 		animacaoCorrente = mapaAnimacoes.get(nome);
 		animacaoCorrente.setProximaAnimacao(temp);
@@ -33,7 +34,7 @@ public class Animador {
 		return animacaoCorrente;
 	}
 
-	public void setAnimacaoCorrente(Animacao animacaoCorrente) {
+	public synchronized void setAnimacaoCorrente(Animacao animacaoCorrente) {
 		this.animacaoCorrente = animacaoCorrente;
 	}
 

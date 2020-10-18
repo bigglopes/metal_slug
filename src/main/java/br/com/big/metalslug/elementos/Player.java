@@ -35,6 +35,8 @@ public class Player implements KeyListener {
 	private Animador animadorSuperior = new Animador();
 	private Animador animadorInferior = new Animador();
 
+	private boolean tiroPressionado = false;
+
 	private List<String> initListaQuadros(String padrao, int qtdeQuadros) {
 		List<String> result = new ArrayList<String>();
 
@@ -48,12 +50,10 @@ public class Player implements KeyListener {
 
 		this.quadroAnimacaoParadoSuperior = initListaQuadros("/sprites/eri/parado/f%d.png", 4);
 		this.quadroAnimacaoAtirandoParteSuperior = initListaQuadros("/sprites/eri/tiro/t%d.png", 10);
-		this.quadroAnimacaoCorrendoParteSuperior = initListaQuadros(
-				"/sprites/eri/correndo_2partes/fc%d.png", 12);
+		this.quadroAnimacaoCorrendoParteSuperior = initListaQuadros("/sprites/eri/correndo_2partes/fc%d.png", 12);
 
 		this.quadroAnimacaoParadoInferior = initListaQuadros("/sprites/eri/parado/base%d.png", 1);
-		this.quadroAnimacaoCorrendoParteInferior = initListaQuadros(
-				"/sprites/eri/correndo_2partes/fb%d.png", 16);
+		this.quadroAnimacaoCorrendoParteInferior = initListaQuadros("/sprites/eri/correndo_2partes/fb%d.png", 16);
 
 		Animacao animacaoParadoSuperior = new Animacao(quadroAnimacaoParadoSuperior, 0,
 				Constantes.DURACAO_QUADRO_PARADO, true);
@@ -110,8 +110,9 @@ public class Player implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+		if (e.getKeyCode() == KeyEvent.VK_SPACE && tiroPressionado == false) {
 			atirar();
+			this.tiroPressionado = true;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -162,6 +163,10 @@ public class Player implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_LEFT) {
 			pararCorrer();
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			tiroPressionado = false;
 		}
 	}
 

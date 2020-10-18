@@ -35,7 +35,7 @@ public class Animacao {
 			this.loop = loop;
 			this.quadroRestart = quadroRestart;
 			for (String pathQuadro : pathQuadros) {
-				InputStream is = getClass().getResourceAsStream( pathQuadro );
+				InputStream is = getClass().getResourceAsStream(pathQuadro);
 				this.quadros.add(ImageIO.read(is));
 			}
 
@@ -44,10 +44,10 @@ public class Animacao {
 		}
 	}
 
-	public BufferedImage getQuadroAtual() {
+	public synchronized BufferedImage getQuadroAtual() {
 
 		long agora = System.currentTimeMillis();
-
+		System.out.println(quadros.size());
 		BufferedImage quadro = this.quadros.get(quadroCorrenteAnimacao);
 
 		if ((agora - ultimaAtualizacaoQuadro) > duracaoQuadro) {
@@ -58,13 +58,16 @@ public class Animacao {
 				if (loop)
 					this.quadroCorrenteAnimacao = this.quadroRestart;
 				else
+				{
+					this.quadroCorrenteAnimacao = 0;
 					animador.setAnimacaoCorrente(proximaAnimacao);
+				}
 		}
 
 		return quadro;
 	}
 
-	public void render(Graphics2D g, boolean flip, int x, int y) {
+	public synchronized void render(Graphics2D g, boolean flip, int x, int y) {
 		g.drawImage(ImageUtil.flip(this.getQuadroAtual(), flip, Constantes.SCALA_SPRITES), x, y, null);
 	}
 
@@ -83,9 +86,8 @@ public class Animacao {
 	public void setProximaAnimacao(Animacao proximaAnimacao) {
 		this.proximaAnimacao = proximaAnimacao;
 	}
-	
-	public void resetAnimacao()
-	{
+
+	public synchronized void resetAnimacao() {
 		this.ultimaAtualizacaoQuadro = 0L;
 		this.quadroCorrenteAnimacao = 0;
 	}
