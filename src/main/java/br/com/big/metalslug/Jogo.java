@@ -1,4 +1,4 @@
-package br.big.metalslug;
+package br.com.big.metalslug;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,10 +6,10 @@ import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 
-import br.big.metalslug.elementos.Cenario;
-import br.big.metalslug.elementos.Player;
-import engine.Constantes;
-import engine.SoundPlayer;
+import br.com.big.metalslug.elementos.Cenario;
+import br.com.big.metalslug.elementos.Player;
+import br.com.big.metalslug.engine.Constantes;
+import br.com.big.metalslug.engine.SoundPlayer;
 
 public class Jogo extends JFrame {
 

@@ -1,4 +1,4 @@
-package engine;
+package br.com.big.metalslug.engine;
 
 public class Constantes {
 	public static final char RIGHT = 'R';

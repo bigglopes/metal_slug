@@ -1,4 +1,4 @@
-package br.big.metalslug;
+package br.com.big.metalslug;
 
 public class Main {
 	

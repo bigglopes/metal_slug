@@ -1,4 +1,4 @@
-package engine;
+package br.com.big.metalslug.engine;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import br.big.metalslug.util.ImageUtil;
+import br.com.big.metalslug.util.ImageUtil;
 
 public class Animacao {
 

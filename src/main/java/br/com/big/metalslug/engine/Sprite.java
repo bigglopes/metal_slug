@@ -1,4 +1,4 @@
-package engine;
+package br.com.big.metalslug.engine;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

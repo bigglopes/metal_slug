@@ -1,4 +1,4 @@
-package engine;
+package br.com.big.metalslug.engine;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

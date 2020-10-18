@@ -1,4 +1,4 @@
-package br.big.metalslug.elementos;
+package br.com.big.metalslug.elementos;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -6,9 +6,9 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.Animacao;
-import engine.Animador;
-import engine.Constantes;
+import br.com.big.metalslug.engine.Animacao;
+import br.com.big.metalslug.engine.Animador;
+import br.com.big.metalslug.engine.Constantes;
 
 public class Player implements KeyListener {
 

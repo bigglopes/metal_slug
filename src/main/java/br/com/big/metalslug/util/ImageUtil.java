@@ -1,4 +1,4 @@
-package br.big.metalslug.util;
+package br.com.big.metalslug.util;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;

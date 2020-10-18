@@ -1,7 +1,6 @@
-package br.big.metalslug.elementos;
+package br.com.big.metalslug.elementos;
 
 import java.awt.Graphics2D;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -9,9 +8,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import br.big.metalslug.util.ImageUtil;
-import engine.Constantes;
-import engine.Sprite;
+import br.com.big.metalslug.engine.Constantes;
+import br.com.big.metalslug.engine.Sprite;
+import br.com.big.metalslug.util.ImageUtil;
 
 public class Cenario {
 	private List<Sprite> chao = new ArrayList<Sprite>();

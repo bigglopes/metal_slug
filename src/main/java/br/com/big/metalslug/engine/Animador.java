@@ -1,4 +1,4 @@
-package engine;
+package br.com.big.metalslug.engine;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
