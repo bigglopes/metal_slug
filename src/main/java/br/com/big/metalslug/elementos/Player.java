@@ -21,6 +21,7 @@ public class Player extends GameObject implements KeyListener {
 	private final String ANIMACAO_CORRENDO = "correndo";
 	private final String ANIMACAO_PARADO = "parado";
 	private final String ANIMACAO_ATIRANDO = "atirando";
+	private final String ANIMACAO_PULO_PARADO = "puloParado";
 
 	private int status = 0;
 
@@ -62,10 +63,10 @@ public class Player extends GameObject implements KeyListener {
 
 		this.quadroAnimacaoParadoSuperior = initListaQuadros("/sprites/eri/parado/f%d.png", 4);
 		this.quadroAnimacaoAtirandoParteSuperior = initListaQuadros("/sprites/eri/tiro/t%d.png", 10);
-		this.quadroAnimacaoCorrendoParteSuperior = initListaQuadros("/sprites/eri/correndo_2partes/fc%d.png", 12);
+		this.quadroAnimacaoCorrendoParteSuperior = initListaQuadros("/sprites/eri/correndo/fc%d.png", 12);
 
 		this.quadroAnimacaoParadoInferior = initListaQuadros("/sprites/eri/parado/base%d.png", 1);
-		this.quadroAnimacaoCorrendoParteInferior = initListaQuadros("/sprites/eri/correndo_2partes/fb%d.png", 16);
+		this.quadroAnimacaoCorrendoParteInferior = initListaQuadros("/sprites/eri/correndo/fb%d.png", 16);
 
 		AnimacaoCiclica animacaoParadoSuperior = new AnimacaoCiclica(quadroAnimacaoParadoSuperior, 0,
 				Constantes.DURACAO_QUADRO_PARADO, true);
