@@ -18,11 +18,10 @@ public abstract class ObjetoRepouso extends GameObject {
 	public boolean sofreComGravidade() {
 		return false;
 	}
-
-	@Override
-	public void desativarGravidade() {
-		System.out.println("Operacao nao suportada desativaGravidade");
-
+	
+	public void setEstaChao( boolean estado )
+	{
+		
 	}
 
 	

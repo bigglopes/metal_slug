@@ -7,7 +7,7 @@ public abstract class GameObject implements Collider {
 	public abstract void addY(int valor);
 
 	public abstract boolean sofreComGravidade();
-
-	public abstract void desativarGravidade();
+	
+	public abstract void setEstaChao( boolean estado );
 
 }

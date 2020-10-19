@@ -15,31 +15,34 @@ public class Gravidade {
 		return me;
 	}
 
-	public void adicionarComponentesColisao( GameObject ... gos  )
-	{
-		objetosJogo.addAll( Arrays.asList( gos ) );
+	public void adicionarComponentesColisao(GameObject... gos) {
+		objetosJogo.addAll(Arrays.asList(gos));
 	}
 
 	public void aplicarGravidade() {
+
 		for (GameObject obj : objetosJogo) {
 			if (obj.sofreComGravidade()) {
+				obj.setEstaChao(false);
 				obj.addY(Constantes.GRAVIDADE);
 				for (GameObject objDestino : objetosJogo) {
 					if (obj != objDestino) {
 						if (obj.getDimensoes().intersects(objDestino.getDimensoes())) {
+							obj.setEstaChao(true);
 							aplicarForcaColisao(obj, objDestino);
 						}
 					}
 				}
 			}
 		}
+
 	}
 
 	private void aplicarForcaColisao(GameObject origem, GameObject objDestino) {
-		for (int i = 1; i <= Constantes.GRAVIDADE*15; i++) {
+		for (int i = 1; i <= Constantes.GRAVIDADE * 15; i++) {
 			origem.addY(-1);
 			if (!origem.getDimensoes().intersects(objDestino.getDimensoes())) {
-				//origem.desativarGravidade();
+				// origem.desativarGravidade();
 				return;
 			}
 

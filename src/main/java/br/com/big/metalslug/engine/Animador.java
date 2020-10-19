@@ -39,4 +39,8 @@ public class Animador {
 		this.animacaoCorrente = animacaoCorrente;
 	}
 
+	public synchronized Animacao getAnimacaoPorNome(String nomeAnimacao) {
+		return this.mapaAnimacoes.get(nomeAnimacao);
+	}
+
 }

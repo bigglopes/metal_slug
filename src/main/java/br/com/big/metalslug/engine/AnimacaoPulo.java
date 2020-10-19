@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.Utilities;
 
 import br.com.big.metalslug.util.ImageUtil;
 
@@ -21,10 +22,12 @@ public class AnimacaoPulo implements Animacao {
 
 	private int posicaoAtualPulo;
 
-	private int posXInicioPulo, posXFimPulo;
+	private int posYInicioPulo, posYFimPulo;
 	private int quadroAtual;
 
-	public AnimacaoPulo(List<String> pathQuadros, int posXInicioPulo, int posXFimPulo) {
+
+
+	public AnimacaoPulo(List<String> pathQuadros, int posYInicioPulo, int posYFimPulo) {
 		try {
 			for (String pathQuadro : pathQuadros) {
 				InputStream is = getClass().getResourceAsStream(pathQuadro);
@@ -42,33 +45,38 @@ public class AnimacaoPulo implements Animacao {
 
 	public synchronized void render(Graphics2D g, boolean flip, int x, int y) {
 
+		long agora = System.currentTimeMillis();
+
 		int qtdeDivisorias = quadros.size();
 
-		int tamanhoDivisoria = (this.posXFimPulo - this.posXInicioPulo) / qtdeDivisorias;
+		int tamanhoDivisoria = Math.abs((this.posYFimPulo - this.posYInicioPulo) / qtdeDivisorias);
 
 		this.quadroAtual = quadros.size() - 1;
 
-		// subindo no pulo
-		if (x >= posicaoAtualPulo) {
-			int estagiosPulo = posXInicioPulo;
+		// descendo no pulo
+		if (y >= posicaoAtualPulo) {
+			int estagiosPulo = posYInicioPulo;
 			for (int i = 0; i < quadros.size(); i++) {
-				if (x > estagiosPulo && x < (estagiosPulo + tamanhoDivisoria)) {
+				if (y > estagiosPulo && y < (estagiosPulo + tamanhoDivisoria)) {
 					this.quadroAtual = i;
 					break;
 				}
 				estagiosPulo += tamanhoDivisoria;
 			}
 		} else {
-			int estagiosPulo = posXFimPulo;
+			int estagiosPulo = posYFimPulo;
 			for (int i = quadros.size() - 1; i >= 0; i--) {
-				if (x < estagiosPulo && x > (estagiosPulo - tamanhoDivisoria)) {
+				if (y < estagiosPulo && y > (estagiosPulo - tamanhoDivisoria)) {
 					this.quadroAtual = i;
 					break;
 				}
 				estagiosPulo -= tamanhoDivisoria;
 			}
 		}
-		this.posicaoAtualPulo = x;
+		this.posicaoAtualPulo = y;
+
+		if (y >= posYInicioPulo)
+			animador.setAnimacaoCorrente(proximaAnimacao);
 
 		g.drawImage(ImageUtil.flip(this.getQuadroAtual(), flip, Constantes.SCALA_SPRITES), x, y, null);
 	}
@@ -100,6 +108,14 @@ public class AnimacaoPulo implements Animacao {
 
 	public int getAlturaQuadroCorrente() {
 		return this.getQuadroAtual().getHeight();
+	}
+
+	public void setPosYInicioPulo(int posYInicioPulo) {
+		this.posYInicioPulo = posYInicioPulo;
+	}
+
+	public void setPosYFimPulo(int posYFimPulo) {
+		this.posYFimPulo = posYFimPulo;
 	}
 
 }

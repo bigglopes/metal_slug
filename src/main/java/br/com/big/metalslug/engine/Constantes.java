@@ -9,11 +9,12 @@ public class Constantes {
 	public static final long DURACAO_QUADRO_ATIRANDO = 50;
 	public static final long SEGUNDO = 1000L;
 
-	public static final int DESLOCAMENTO = 3;
+	public static final int DESLOCAMENTO = 5;
 	public static final int GRAVIDADE = 5;
 
 	public static final int STATUS_PARADO = 0;
 	public static final int STATUS_CORRENDO = 1;
+	public static final int STATUS_PULANDO = 2;
 
 	public static final double SCALA_SPRITES = 2.5;
 

@@ -9,6 +9,7 @@ import java.util.List;
 
 import br.com.big.metalslug.engine.Animacao;
 import br.com.big.metalslug.engine.AnimacaoCiclica;
+import br.com.big.metalslug.engine.AnimacaoPulo;
 import br.com.big.metalslug.engine.Animador;
 import br.com.big.metalslug.engine.Constantes;
 import br.com.big.metalslug.engine.GameObject;
@@ -27,24 +28,20 @@ public class Player extends GameObject implements KeyListener {
 
 	private char face = Constantes.RIGHT;
 
-	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayer = 290;
+	private int posXPlayerMundo = 300, posXPlayerInicial = 300, posYPlayerInicial = 372,
+			posYAnterior = posYPlayerInicial;
 
-	private int parteSuperiorXPlayerTela = 200, parteSuperiorYPlayerTela = posYPlayer;
-	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = posYPlayer + 37;
-
-	private List<String> quadroAnimacaoParadoSuperior = new ArrayList<String>();
-	private List<String> quadroAnimacaoParadoInferior = new ArrayList<String>();
-
-	private List<String> quadroAnimacaoCorrendoParteSuperior = new ArrayList<String>();
-	private List<String> quadroAnimacaoCorrendoParteInferior = new ArrayList<String>();
-	private List<String> quadroAnimacaoAtirandoParteSuperior = new ArrayList<String>();
+	private int parteSuperiorXPlayerTela = 200, parteSuperiorYPlayerTela = posYPlayerInicial;
+	private int parteInferiorXPlayerTela = 200, parteInferiorYPlayerTela = posYPlayerInicial + 37;
 
 	private Animador animadorSuperior = new Animador();
 	private Animador animadorInferior = new Animador();
 
 	private boolean tiroPressionado = false;
 
-	private boolean pulando = true;
+	private int tamanhoPulo = 120;
+
+	private boolean estouChao = false;
 
 	// TODO BASEADO NO QUADRO ATUALIZAR LARGURA DO RETANGULO E A
 	private RectangleCollider collider = new RectangleCollider(parteSuperiorXPlayerTela, parteSuperiorYPlayerTela, 30,
@@ -61,12 +58,14 @@ public class Player extends GameObject implements KeyListener {
 
 	public Player() {
 
-		this.quadroAnimacaoParadoSuperior = initListaQuadros("/sprites/eri/parado/f%d.png", 4);
-		this.quadroAnimacaoAtirandoParteSuperior = initListaQuadros("/sprites/eri/tiro/t%d.png", 10);
-		this.quadroAnimacaoCorrendoParteSuperior = initListaQuadros("/sprites/eri/correndo/fc%d.png", 12);
+		List<String> quadroAnimacaoParadoSuperior = initListaQuadros("/sprites/eri/parado/f%d.png", 4);
+		List<String> quadroAnimacaoAtirandoParteSuperior = initListaQuadros("/sprites/eri/tiro/t%d.png", 10);
+		List<String> quadroAnimacaoCorrendoParteSuperior = initListaQuadros("/sprites/eri/correndo/fc%d.png", 12);
+		List<String> quadroAnimacaoPulandoParadoParteSuperior = initListaQuadros("/sprites/eri/puloparado/fc%d.png", 6);
 
-		this.quadroAnimacaoParadoInferior = initListaQuadros("/sprites/eri/parado/base%d.png", 1);
-		this.quadroAnimacaoCorrendoParteInferior = initListaQuadros("/sprites/eri/correndo/fb%d.png", 16);
+		List<String> quadroAnimacaoParadoInferior = initListaQuadros("/sprites/eri/parado/base%d.png", 1);
+		List<String> quadroAnimacaoCorrendoParteInferior = initListaQuadros("/sprites/eri/correndo/fb%d.png", 16);
+		List<String> quadroAnimacaoPulandoParadoParteInferior = initListaQuadros("/sprites/eri/puloparado/fb%d.png", 6);
 
 		AnimacaoCiclica animacaoParadoSuperior = new AnimacaoCiclica(quadroAnimacaoParadoSuperior, 0,
 				Constantes.DURACAO_QUADRO_PARADO, true);
@@ -74,16 +73,22 @@ public class Player extends GameObject implements KeyListener {
 				Constantes.DURACAO_QUADRO_CORRENDO, true);
 		AnimacaoCiclica animacaoAtirandoCorrendo = new AnimacaoCiclica(quadroAnimacaoAtirandoParteSuperior, 0,
 				Constantes.DURACAO_QUADRO_CORRENDO, false);
+		AnimacaoPulo animacaoPuloParadoSuperior = new AnimacaoPulo(quadroAnimacaoPulandoParadoParteSuperior,
+				parteSuperiorYPlayerTela, parteSuperiorYPlayerTela - tamanhoPulo);
 		animadorSuperior.addAnimacao(ANIMACAO_PARADO, animacaoParadoSuperior);
 		animadorSuperior.addAnimacao(ANIMACAO_CORRENDO, animacaoCorrendoSuperior);
 		animadorSuperior.addAnimacao(ANIMACAO_ATIRANDO, animacaoAtirandoCorrendo);
+		animadorSuperior.addAnimacao(ANIMACAO_PULO_PARADO, animacaoPuloParadoSuperior);
 
 		AnimacaoCiclica animacaoParadoInferior = new AnimacaoCiclica(quadroAnimacaoParadoInferior, 0,
 				Constantes.DURACAO_QUADRO_PARADO, true);
 		AnimacaoCiclica animacaoCorrendoInferior = new AnimacaoCiclica(quadroAnimacaoCorrendoParteInferior, 4,
 				Constantes.DURACAO_QUADRO_CORRENDO, true);
+		AnimacaoPulo animacaoPuloParadoInferior = new AnimacaoPulo(quadroAnimacaoPulandoParadoParteInferior,
+				parteInferiorYPlayerTela, parteInferiorYPlayerTela - tamanhoPulo);
 		animadorInferior.addAnimacao(ANIMACAO_PARADO, animacaoParadoInferior);
 		animadorInferior.addAnimacao(ANIMACAO_CORRENDO, animacaoCorrendoInferior);
+		animadorInferior.addAnimacao(ANIMACAO_PULO_PARADO, animacaoPuloParadoInferior);
 
 		animadorSuperior.setAnimacaoCorrente(animacaoParadoSuperior);
 		animadorInferior.setAnimacaoCorrente(animacaoParadoInferior);
@@ -93,12 +98,24 @@ public class Player extends GameObject implements KeyListener {
 
 	public void render(Graphics2D g) {
 
+		if (this.status == Constantes.STATUS_PULANDO && posYAnterior == parteSuperiorYPlayerTela) {
+			this.pararCorrer();
+		}
+
+		posYAnterior = parteSuperiorYPlayerTela;
 		Animacao aimacaoInferior = this.animadorInferior.getAnimacaoCorrente();
 		aimacaoInferior.render(g, this.face == Constantes.LEFT, parteInferiorXPlayerTela, parteInferiorYPlayerTela);
 
 		Animacao animacaoSuperior = this.animadorSuperior.getAnimacaoCorrente();
 		animacaoSuperior.render(g, this.face == Constantes.LEFT, parteSuperiorXPlayerTela, parteSuperiorYPlayerTela);
 
+		desenharCollider(g, aimacaoInferior, animacaoSuperior);
+
+		if (posYPlayerInicial != parteSuperiorYPlayerTela)
+			System.out.println("Maximo Pulo:" + parteSuperiorYPlayerTela);
+	}
+
+	private void desenharCollider(Graphics2D g, Animacao aimacaoInferior, Animacao animacaoSuperior) {
 		int largura = (int) (1
 				* (aimacaoInferior.getLarguraQuadroCorrente() + animacaoSuperior.getLarguraQuadroCorrente()));
 		int altura = (int) (1.9
@@ -172,7 +189,7 @@ public class Player extends GameObject implements KeyListener {
 	}
 
 	private synchronized void pararCorrer() {
-		if (status == Constantes.STATUS_CORRENDO) {
+		if (status == Constantes.STATUS_CORRENDO || status == Constantes.STATUS_PULANDO) {
 			status = Constantes.STATUS_PARADO;
 
 			animadorInferior.transitar(ANIMACAO_PARADO);
@@ -191,9 +208,26 @@ public class Player extends GameObject implements KeyListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			Impulso.getInstance().setGameObject(this);
-			Impulso.getInstance().setValorX(0);
-			Impulso.getInstance().setValorY(-9);
+//			this.status = Constantes.STATUS_PULANDO;
+//			Animacao aCorrente = this.animadorSuperior.getAnimacaoCorrente();
+//			AnimacaoPulo aPulo = (AnimacaoPulo) this.animadorSuperior.getAnimacaoPorNome(ANIMACAO_PULO_PARADO);
+//			aPulo.setProximaAnimacao(aCorrente);
+//			aPulo.setPosYInicioPulo(parteSuperiorYPlayerTela);
+//			aPulo.setPosYFimPulo(parteSuperiorYPlayerTela - tamanhoPulo);
+//			this.animadorSuperior.transitar(ANIMACAO_PULO_PARADO);
+//
+//			aCorrente = this.animadorInferior.getAnimacaoCorrente();
+//			aPulo = (AnimacaoPulo) this.animadorInferior.getAnimacaoPorNome(ANIMACAO_PULO_PARADO);
+//			aPulo.setProximaAnimacao(aCorrente);
+//			aPulo.setPosYInicioPulo(parteInferiorYPlayerTela);
+//			aPulo.setPosYFimPulo(parteInferiorYPlayerTela - tamanhoPulo);
+//			this.animadorInferior.transitar(ANIMACAO_PULO_PARADO);
+
+			if (this.estouChao) {
+				Impulso.getInstance().setGameObject(this);
+				Impulso.getInstance().setValorX(0);
+				Impulso.getInstance().setValorY(-9);
+			}
 		}
 	}
 
@@ -222,7 +256,7 @@ public class Player extends GameObject implements KeyListener {
 
 	@Override
 	public boolean sofreComGravidade() {
-		return pulando;
+		return true;
 	}
 
 	@Override
@@ -231,8 +265,8 @@ public class Player extends GameObject implements KeyListener {
 	}
 
 	@Override
-	public void desativarGravidade() {
-		this.pulando = false;
+	public void setEstaChao(boolean estado) {
+		this.estouChao = true;
 
 	}
 

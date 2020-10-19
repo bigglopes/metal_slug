@@ -56,7 +56,8 @@ public class Impulso {
 			gameObject.addX(valorX);
 			gameObject.addY(valorY);
 		}
-
 	}
+	
+	
 
 }
